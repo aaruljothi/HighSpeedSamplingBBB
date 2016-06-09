@@ -23,21 +23,21 @@ using namespace std;
 
 // PIN NAME & PINLOCATION
 // CNVST = GPIO1_18
-// BUSY = GPIO1_13
+// BUSY = GPIO0_11
 // D0 = GPIO0_30
 // D1 = GPIO0_31
-// D2 = GPIO1_16
-// d3 = GPIO0_5
+// D2 = GPIO0_15
+// D3 = GPIO0_5
 // D4 = GPIO0_26
 // D5 = GPIO0_3
-// D6 = GPIO1_17
+// D6 = GPIO0_2
 // D7 = GPIO0_12
 // D8 = GPIO0_7
 // D9 = GPIO0_13
-// D10 = GPIO1_12
+// D10 = GPIO0_10
 // D11 = GPIO0_20
-// D12 = GPIO1_15
-// D13 = GPIO1_28
+// D12 = GPIO0_9
+// D13 = GPIO0_8
 // D14 = GPIO0_4
 // D15 = GPIO0_27
 
@@ -79,7 +79,6 @@ int main(){
 // Toggle CNVST to start
     
     unsigned long gpio0Array[samplenum]; //Creates array with 3.2 million samples
-    unsigned long gpio1Array[samplenum];
 
     int t = 0;
 
@@ -90,36 +89,27 @@ int main(){
 
         //While the busy pin is high, do nothing
         while( (pinconf1[GPIO_DATAIN/4] & (1 << 13)));
-	gpio0Array[t] = pinconf0[GPIO_DATAIN/4] ;
-        gpio1Array[t] = pinconf1[GPIO_DATAIN/4];
+	gpio0Array[t] = pinconf0[GPIO_DATAIN/4];
 	    t++;
     }
 
 
 // open file to write
-//    ofstream writeFile;   
 
     FILE *pFile;
     
-    clock_t timer;
-    timer = clock();
+    
     pFile = fopen("baseline2_dump.txt", "w");
-
-
     t = 0; // Sample counter
 
     while(t < samplenum){
     	fprintf(pFile, "%lu", gpio0Array[t]);
-    	fprintf(pFile, "\n");
-    	fprintf(pFile, "%lu", gpio1Array[t]);
     	fprintf(pFile, "\n");
     	t++;
     }
 
 // Close write file
     fclose(pFile);
-    cout << "total write time:" <<endl;
-    cout << clock() - timer <<endl;	
     return 0;
 }
 
