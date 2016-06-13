@@ -47,9 +47,11 @@ using namespace std;
 
 
 int main(){
+	time_t start_timer = time(0);
+	int time_tofunc = 0; // change to time 
+	while (time(0)-start_timer < 180 - time_tofunc);
 
-
-   int samplenum = 3200000;
+    int samplenum = 3200000;
 
 // map /dev/mem to access
     int fd = open("/dev/mem",O_RDWR | O_SYNC);
