@@ -1,3 +1,4 @@
+
 #include <cstdio>
 #include <unistd.h>
 #include <fcntl.h>
@@ -43,29 +44,19 @@ using namespace std;
 
 
 //Function to write int to file using fwrite()
-void writeInt(FILE * out, int num)
-{
-    if (NULL == out){
-	cout << "EXIT_FAILURE";
-    }
-    fwrite(&num, sizeof(int), 1, out);
-}
 
 
 int main(){
 
-   int samplenum = 320000;
 
-
+   int samplenum = 3200000;
 
 // map /dev/mem to access
     int fd = open("/dev/mem",O_RDWR | O_SYNC);
 
-
-
 // connect pinconf1 to gpio1 (repeat for all four)
-    unsigned long* pinconf0 =  (unsigned long*) mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO0_ADDR);
-    unsigned long* pinconf1 =  (unsigned long*) mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO1_ADDR);
+    ulong* pinconf0 =  (ulong*) mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO0_ADDR);
+    ulong* pinconf1 =  (ulong*) mmap(NULL, 0x1000, PROT_READ | PROT_WRITE, MAP_SHARED, fd, GPIO1_ADDR);
 
 // Set CNVST to only output
     pinconf1[OE_ADDR/4] &= (0xFFFFFFFF ^ (1 << 18));
@@ -78,10 +69,15 @@ int main(){
 
 // Toggle CNVST to start
     
-    unsigned long gpio0Array[samplenum]; //Creates array with 3.2 million samples
-    unsigned long gpio1Array[samplenum];
+	unsigned long * gpio0Array;
+	unsigned long * gpio1Array;
+
+	gpio0Array = new unsigned long[samplenum]; //Creates array with 3.2 million samples
+    	gpio1Array = new unsigned long[samplenum];
 
     int t = 0;
+
+//    clock_t timer = clock();
 
     while(t < samplenum) //takes 320 million samples
     {
@@ -95,31 +91,29 @@ int main(){
 	    t++;
     }
 
+//   cout << "Total time taken for 320k samples" << endl;
+//   cout << clock() - timer << endl;
+//   cout << "Clock speed:" << endl;
+//   cout <<  CLOCKS_PER_SEC << endl;
+
 
 // open file to write
 //    ofstream writeFile;   
 
     FILE *pFile;
-    
-    clock_t timer;
-    timer = clock();
-    pFile = fopen("baseline2_dump.txt", "w");
 
-
-    t = 0; // Sample counter
-
+    pFile = fopen("/media/card/rawdata.txt", "w");
+    t = 0;
     while(t < samplenum){
-    	fprintf(pFile, "%lu", gpio0Array[t]);
-    	fprintf(pFile, "\n");
-    	fprintf(pFile, "%lu", gpio1Array[t]);
-    	fprintf(pFile, "\n");
+	fprintf(pFile, "%lu", gpio0Array[t]);
+	fprintf(pFile, "\n");
+	fprintf(pFile, "%lu", gpio1Array[t]);
+	fprintf(pFile, "\n");
     	t++;
     }
-
-// Close write file
     fclose(pFile);
-    cout << "total write time:" <<endl;
-    cout << clock() - timer <<endl;	
+	delete [] gpio0Array;
+	delete [] gpio1Array;
     return 0;
 }
 
