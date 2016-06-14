@@ -18,6 +18,7 @@ def tobin():
 	#print('Error could not open file!!!!!')
 
 def binrip(inpute = []):
+	gc.collect()
 	result = []
 	temp = []
 	temp2 = ''
@@ -37,12 +38,14 @@ def binrip(inpute = []):
 
 
 def bintoint(inpute = []):
+	gc.collect()
 	result = []
 	for e in inpute:
 		result.append(str(int(e, 2)))
 	return result
 
 def writeit(inpute =[]):
+	gc.collect()
 	print('Writing out')
 	writeFile = input('Enter write file name: ') + '.txt'
 	#try:
@@ -56,6 +59,7 @@ def writeit(inpute =[]):
 	#	return 'failed'
 
 def fixnums(inpute = []):
+	gc.collect()
 	# set to round up
 	print("Mapping values")
 	one_volt = 48463
