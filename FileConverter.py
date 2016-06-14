@@ -21,7 +21,7 @@ def binrip(inpute = []):
 	result = []
 	temp = []
 	temp2 = ''
-	print('Riping Binary Char')
+	print('Ripping Binary Char')
 	count = 0
 	for line in inpute:
 		if count % 2 != 0:
@@ -49,13 +49,15 @@ def writeit(inpute =[]):
 	out = open(writeFile, 'w')
 	for e in inpute:
 		out.write(e + '\n')
+	print('Total Lines converted: ')
+	print(len(inpute))
 	return 'Conversion Complete'
 	#except:
 	#	return 'failed'
 
 def fixnums(inpute = []):
 	# set to round up
-	print("Maping values")
+	print("Mapping values")
 	one_volt = 48463
 	zero_volt = 31776
 	one_to_zero = one_volt - zero_volt
@@ -67,6 +69,6 @@ def fixnums(inpute = []):
 
 
 
-
+print("Binary to Voltage by Arun Aruljothi (2016)")
 print(writeit(fixnums(bintoint(binrip(tobin())))))
 
