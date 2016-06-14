@@ -1,0 +1,94 @@
+import sys
+import math
+
+def tobin():
+	result = []
+	fnametxt = input('Enter Read File Name: ') + '.txt'
+	writeFile = input('Enter write file name: ') + '.txt'
+	print('Starting file converion')
+	count = 0
+	out = open(writeFile, 'w')
+	with open(fnametxt) as f:
+		for line in f:
+			t = ''
+			t = t+ ((32-len("{0:b}".format(int(line))))*'0') + "{0:b}".format(int(line)) + '\n'
+			if count % 2 != 0:
+				i = [t[31-16], t[31-17], t[31-12], t[31-15], t[31-28]]
+				j = ''
+				#result.append(temp[0] + temp[1] + i[0] + temp[2] + temp[3] + temp[4] + i[1] + temp[5] + temp[6] + temp[7] + i[2] + temp[8] + i[3] + i[4] + temp[9] + temp[10])
+				j = (temp[10] + temp[9] + i[4] + i[3] + temp[8] + i[2] + temp[7] + temp[6] + temp[5] + i[1] + temp[4] + temp[3] +  temp[2] + i[0] + temp[1] + temp[0])
+				t = '' 
+				t = str(int(j,2))
+				one_volt = 48463
+				zero_volt = 31776
+				one_to_zero = one_volt - zero_volt
+				j = str((float(t) - zero_volt)/one_to_zero)
+				out.write(j + '\n')
+			else:
+				temp = [t[31-30], t[31-31], t[31-5], t[31-26], t[31-3], t[31-12], t[31-7], t[31-13], t[31-20], t[31-4], t[31-27]]
+			count = count + 1
+	#writeFile.close()
+	f.close()
+	print('Binary Conversion finished')
+	return result
+	#print('Error could not open file!!!!!')
+
+def binrip(inpute = []):
+	gc.collect()
+	result = []
+	temp = []
+	temp2 = ''
+	print('Ripping Binary Char')
+	count = 0
+	for line in inpute:
+		if count % 2 != 0:
+			i = [line[31-16], line[31-17], line[31-12], line[31-15], line[31-28]]
+			#result.append(temp[0] + temp[1] + i[0] + temp[2] + temp[3] + temp[4] + i[1] + temp[5] + temp[6] + temp[7] + i[2] + temp[8] + i[3] + i[4] + temp[9] + temp[10])
+			result.append(temp[10] + temp[9] + i[4] + i[3] + temp[8] + i[2] + temp[7] + temp[6] + temp[5] + i[1] + temp[4] + temp[3] +  temp[2] + i[0] + temp[1] + temp[0])
+		else:
+			temp = [line[31-30], line[31-31], line[31-5], line[31-26], line[31-3], line[31-12], line[31-7], line[31-13], line[31-20], line[31-4], line[31-27]]
+		count = count + 1
+	return result
+
+
+
+
+def bintoint(inpute = []):
+	gc.collect()
+	result = []
+	for e in inpute:
+		result.append(str(int(e, 2)))
+	return result
+
+def writeit(inpute =[]):
+	gc.collect()
+	print('Writing out')
+	writeFile = input('Enter write file name: ') + '.txt'
+	#try:
+	out = open(writeFile, 'w')
+	for e in inpute:
+		out.write(e + '\n')
+	print('Total Lines converted: ')
+	print(len(inpute))
+	return 'Conversion Complete'
+	#except:
+	#	return 'failed'
+
+def fixnums(inpute = []):
+	gc.collect()
+	# set to round up
+	print("Mapping values")
+	one_volt = 48463
+	zero_volt = 31776
+	one_to_zero = one_volt - zero_volt
+	result  = [] 
+	for e in inpute:
+		result.append(str((float(e) - zero_volt)/one_to_zero))
+	return result
+
+
+
+
+print("Binary to Voltage by Arun Aruljothi (2016)")
+print(tobin())
+
